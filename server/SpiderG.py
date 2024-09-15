@@ -10,12 +10,14 @@ try:
 	import Adafruit_PCA9685
 	pwm = Adafruit_PCA9685.PCA9685()
 	pwm.set_pwm_freq(50)
+	print('Init SpiderG : Ok...')
 except:
 	import os
 	os.system("sudo pip3 install adafruit-pca9685")
 	import Adafruit_PCA9685
 	pwm = Adafruit_PCA9685.PCA9685()
 	pwm.set_pwm_freq(50)
+	print('Init SpiderG : *** Error ***')
 
 MPU_connection = 1
 try:
@@ -46,34 +48,40 @@ except:
 	steadyMode = 0
 	print('mpu6050 disconnected\nmpu6050 is not connected and the related functions are unavailable.')
 
-FLB_port = 0
-FLM_port = 1
+FLB_port = 1
+FLM_port = 0
 FLE_port = 2
 
-FRB_port = 6
-FRM_port = 7
-FRE_port = 8
+FRB_port = 3
+FRM_port = 4
+FRE_port = 5
 
-HLB_port = 3
-HLM_port = 4
-HLE_port = 5
+HLB_port = 6
+HLM_port = 7
+HLE_port = 8
 
 HRB_port = 9
 HRM_port = 10
 HRE_port = 11
 
-P_port = 12
-T_port = 13
+P_port = 13
+T_port = 14
 
-FLB_init_pwm = 313
-FLM_init_pwm = 305
-FLE_init_pwm = 313
+# LEG I init
+FLB_init_pwm = 330
+FLM_init_pwm = 275
+FLE_init_pwm = 380
 
-FRB_init_pwm = 325
-FRM_init_pwm = 281
-FRE_init_pwm = 301
+FLB_max_pwm = 540
+FLM_max_pwm = 540
+FLE_max_pwm = 540
 
-HLB_init_pwm = 312
+# LEG II init
+FRB_init_pwm = 400
+FRM_init_pwm = 330
+FRE_init_pwm = 380
+
+HLB_init_pwm = 200
 HLM_init_pwm = 287
 HLE_init_pwm = 260
 
@@ -83,6 +91,19 @@ HRE_init_pwm = 340
 
 P_init_pwm   = 300
 T_init_pwm   = 300
+
+def move_leg1():
+	pwm.set_pwm(FLB_port, 0, 540)
+	time.sleep(2)
+	for i in range(540,60,-5):
+		pwm.set_pwm(FLB_port, 0, i)
+		print('Pos.: ',i)
+		time.sleep(0.1)
+
+	time.sleep(3)
+	pwm.set_pwm(FLB_port, 0, FLB_init_pwm)
+		
+    
 
 def move_init():
 	pwm.set_pwm(FLB_port, 0, FLB_init_pwm)
